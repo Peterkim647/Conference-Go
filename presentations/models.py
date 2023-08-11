@@ -47,6 +47,14 @@ class Presentation(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def approve(self):
+        self.status = Status.objects.get(name="APPROVED")
+        self.save()
+
+    def reject(self):
+        self.status = Status.objects.get(name="REJECTED")
+        self.save()
+
     def get_api_url(self):
         return reverse("api_show_presentation", kwargs={"id": self.id})
 
@@ -55,3 +63,11 @@ class Presentation(models.Model):
 
     class Meta:
         ordering = ("title",)  # Default ordering for presentation
+
+
+@classmethod
+def create(cls, **kwargs):
+    kwargs["status"] = Status.objects.get(name="SUBMITTED")
+    presentation = cls(**kwargs)
+    presentation.save()
+    return presentation
