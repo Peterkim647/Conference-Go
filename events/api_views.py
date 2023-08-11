@@ -106,6 +106,7 @@ def api_show_conference(request, id):
             safe=False,
         )
 
+
 @require_http_methods(["GET", "POST"])
 def api_list_locations(request):
     if request.method == "GET":
